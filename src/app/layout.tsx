@@ -9,6 +9,7 @@ import Navbar from "./components/navbar/Navbar";
 import ClientOnly from "./components/ClientOnly";
 import { User } from "@prisma/client";
 import { NextAuthProvider } from "./components/utils/NextAuthProvider";
+import SeedDatabase from "./seed/page";
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -36,7 +37,7 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <NextAuthProvider>
+        <NextAuthProvider>       
             <ClientOnly>
             <Navbar currentUser={currentUser}/>
             <ToasterProvider />
