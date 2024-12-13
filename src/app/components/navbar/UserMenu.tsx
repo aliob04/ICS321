@@ -102,6 +102,7 @@ const UserMenu:React.FC<UserMenuProps> = ({currentUser}) => {
 
                 {currentUser ? (
                     <>
+                        {console.log(currentUser)}
                         <MenuItem onClick={()=>{}} label={currentUser.email as string}/>
                         <hr />
                         <MenuItem onClick={()=>{console.log(currentUser.id,currentUser.email)}} label="My reservations"/>

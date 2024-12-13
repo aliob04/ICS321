@@ -11,14 +11,18 @@ import Button from "@/app/components/utils/Button"
 import Input from "@/app/components/utils/Input"
 import toast from "react-hot-toast"
 import useLoginModal from "@/app/hooks/useLoginModal"
-import {signIn} from 'next-auth/react'
+import {signIn, useSession} from 'next-auth/react'
 import { useRouter } from "next/navigation"
+import getCurrentUser from "@/app/actions/getCurrentUser"
+import { getServerSession } from "next-auth"
 
 const LoginModal = () => {
     const router = useRouter()
     const registerModal = useRegisterModal()
     const loginModal = useLoginModal()
     const [isLoading,setIsLoading] = useState(false)
+    const { data: session, status } = useSession();
+
 
 
 
@@ -42,6 +46,7 @@ const LoginModal = () => {
             setIsLoading(false)
             if(callback?.ok){
                 toast.success('Logged in')
+                signIn('credentials')
                 router.refresh()
                 loginModal.onClose()
             }
@@ -62,8 +67,8 @@ const LoginModal = () => {
     const footerContent = (
         <div className='flex flex-col gap-4 mt-3'>
             <hr />
-                <Button outline label='Continue with Google' icon={FcGoogle} onClick={null}/>
-                <Button outline label='Continue with Github' icon={AiFillGithub} onClick={null}/>
+                <Button outline label='Continue with Google' icon={FcGoogle} onClick={()=> signIn('google')}/>
+                <Button outline label='Continue with Github' icon={AiFillGithub} onClick={()=> signIn('github')}/>
             <div 
                 className='
                     text-neutral-500

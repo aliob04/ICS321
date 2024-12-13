@@ -6,8 +6,9 @@ import RegisterModal from "@/app/components/modals/RegisterModal";
 import LoginModal from "./components/modals/LoginModal";
 import getCurrentUser from "./actions/getCurrentUser";
 import Navbar from "./components/navbar/Navbar";
-import ClientOnly from "./components/utils/ClientOnly";
+import ClientOnly from "./components/ClientOnly";
 import { User } from "@prisma/client";
+import { NextAuthProvider } from "./components/utils/NextAuthProvider";
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -29,18 +30,20 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const currentUser = getCurrentUser()
+  const currentUser = await getCurrentUser()
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ClientOnly>
-          <Navbar currentUser={currentUser as User}/>
-          <ToasterProvider />
-          <RegisterModal />
-          <LoginModal />
-        </ClientOnly>
+        <NextAuthProvider>
+            <ClientOnly>
+            <Navbar currentUser={currentUser}/>
+            <ToasterProvider />
+            <RegisterModal />
+            <LoginModal />
+            </ClientOnly>
+        </NextAuthProvider>
         {children}
       </body>
     </html>

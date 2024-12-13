@@ -10,6 +10,7 @@ import Heading from "@/app/components/utils/Heading"
 import Button from "@/app/components/utils/Button"
 import Input from "@/app/components/utils/Input"
 import toast from "react-hot-toast"
+import { signIn } from "next-auth/react"
 
 
 const RegisterModal = () => {
@@ -36,6 +37,7 @@ const RegisterModal = () => {
         setIsLoading(true)
         axios.post('/api/register',data)
         .then(() => {
+            signIn('credentials')
             console.log('Data sent successfully:', data);
             registerModal.onClose()
         })
@@ -60,8 +62,8 @@ const RegisterModal = () => {
     const footerContent = (
         <div className='flex flex-col gap-4 mt-3'>
             <hr />
-                <Button outline label='Continue with Google' icon={FcGoogle} onClick={null}/>
-                <Button outline label='Continue with Github' icon={AiFillGithub} onClick={null}/>
+                <Button outline label='Continue with Google' icon={FcGoogle} onClick={()=> signIn('google')}/>
+                <Button outline label='Continue with Github' icon={AiFillGithub} onClick={()=> signIn('github')}/>
             <div 
                 className='
                     text-neutral-500
