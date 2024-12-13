@@ -116,6 +116,8 @@ model Reservation {
   toStationId   String
   status        String
   coachType     String
+  departureTime DateTime
+  arrivalTime   DateTime
 
   train         Train       @relation(fields: [trainId], references: [id])
   passenger     Passenger   @relation(fields: [passengerId], references: [id])
@@ -125,6 +127,7 @@ model Reservation {
   payments      Payment[]
   waitingLists  WaitingList[]
 }
+
 
 model Dependent {
   id          String     @id @default(cuid())
