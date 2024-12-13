@@ -2,11 +2,13 @@ import { getServerSession } from 'next-auth/next'
 
 import prisma from '../utils/db'
 import {authOptions} from '@/app/utils/auth'
+import toast from 'react-hot-toast';
 
 
 export async function getSession() {
     return await getServerSession(authOptions)
 }
+
 
 export default async function getCurrentUser() {
     try{

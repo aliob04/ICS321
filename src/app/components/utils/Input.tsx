@@ -39,8 +39,8 @@ const Input:React.FC<InputProps> = ({ id,label,type = 'text',disable,formatPrice
         disabled:opacity-70 
         disabled:couror-not-allowed 
         ${formatPrice ? 'pl-9':'pl-4'} 
-        ${errors[id] ? 'border-rose-500':'border-neutral-500'}
-        ${errors[id] ? 'focus:border-rose-500':'focus:border-neutral-500'}
+        ${errors[id] ? 'border-green-700':'border-neutral-500'}
+        ${errors[id] ? 'focus:border-green-700':'focus:border-neutral-500'}
         `}/>
         <label 
             className={`
@@ -57,7 +57,7 @@ const Input:React.FC<InputProps> = ({ id,label,type = 'text',disable,formatPrice
             peer-placeholder-shown:translate-y-0
             peer-focus:scale-75
             peer-focus:-translate-y-4
-            ${errors[id] ? 'text-rose-500':'text-zinc-500'}
+            ${errors[id] ? 'text-green-700':'text-zinc-500'}
         `}>
             {label}
         </label>

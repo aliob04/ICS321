@@ -9,7 +9,6 @@ import prisma from "./db";
 export const authOptions = {
     adapter: PrismaAdapter(prisma),
     secret: process.env.NEXTAUTH_SECRET,
-    debug: true,  // Add this for debugging
     providers: [
         GitHubProvider({
             clientId: process.env.GITHUB_ID as string,

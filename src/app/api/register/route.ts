@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt'
+import bcrypt from "bcrypt";
 import prisma from '../../utils/db'
 import { NextResponse } from 'next/server'
 

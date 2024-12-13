@@ -7,7 +7,7 @@ import {FieldValues, SubmitHandler,useForm} from 'react-hook-form'
 import useRegisterModal from "@/app/hooks/useRegisterModal"
 import Modal from "@/app/components/modals/Modal"
 import Heading from "@/app/components/utils/Heading"
-import Button from "@/app/components/modals/Button"
+import Button from "@/app/components/utils/Button"
 import Input from "@/app/components/utils/Input"
 import toast from "react-hot-toast"
 
@@ -36,9 +36,11 @@ const RegisterModal = () => {
         setIsLoading(true)
         axios.post('/api/register',data)
         .then(() => {
+            console.log('Data sent successfully:', data);
             registerModal.onClose()
         })
         .catch((error) => {
+            console.error('Error response:', error.response?.data || error.message);
             toast.error("Something went wrong")
         })
         .finally(() => {
@@ -48,7 +50,7 @@ const RegisterModal = () => {
     
     const bodyContent = (
         <div className='flex flex-col gap-4'>
-            <Heading title='Welcome to Aitbnb' subtitle='Create an account!' />
+            <Heading title='Welcome to KFUPM Trainstations' subtitle='Create an account!' />
             <Input id='email' label='Email' disable={isLoading} register={register} errors={errors} required/>
             <Input id='name' label='Name' disable={isLoading} register={register} errors={errors}  required/>
             <Input id='password' label='Password' type='password' disable={isLoading} register={register} errors={errors}  required/>

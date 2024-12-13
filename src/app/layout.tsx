@@ -5,6 +5,9 @@ import ToasterProvider from "./providers/toasterProvider";
 import RegisterModal from "@/app/components/modals/RegisterModal";
 import LoginModal from "./components/modals/LoginModal";
 import getCurrentUser from "./actions/getCurrentUser";
+import Navbar from "./components/navbar/Navbar";
+import ClientOnly from "./components/utils/ClientOnly";
+import { User } from "@prisma/client";
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -32,9 +35,12 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ToasterProvider />
-        {/* <RegisterModal /> */}
-        <LoginModal />
+        <ClientOnly>
+          <Navbar currentUser={currentUser as User}/>
+          <ToasterProvider />
+          <RegisterModal />
+          <LoginModal />
+        </ClientOnly>
         {children}
       </body>
     </html>
