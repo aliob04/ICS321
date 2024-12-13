@@ -11,10 +11,12 @@ import Button from "@/app/components/utils/Button"
 import Input from "@/app/components/utils/Input"
 import toast from "react-hot-toast"
 import { signIn } from "next-auth/react"
+import useLoginModal from "@/app/hooks/useLoginModal"
 
 
 const RegisterModal = () => {
     const registerModal = useRegisterModal()
+    const loginModal = useLoginModal()
     const [isLoading,setIsLoading] = useState(false)
 
 
@@ -35,15 +37,15 @@ const RegisterModal = () => {
 
     const onSubmit:  SubmitHandler<FieldValues> = (data) => {
         setIsLoading(true)
-        axios.post('/api/register',data)
+        axios.post('/api/auth/register', data)
         .then(() => {
-            signIn('credentials')
-            console.log('Data sent successfully:', data);
-            registerModal.onClose()
+            toast.success('Registered!');
+            registerModal.onClose();
+            loginModal.onOpen();
         })
         .catch((error) => {
-            console.error('Error response:', error.response?.data || error.message);
-            toast.error("Something went wrong")
+            toast.error('Something went wrong.');
+            console.error('Registration error:', error);
         })
         .finally(() => {
             setIsLoading(false)
