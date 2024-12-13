@@ -46,7 +46,6 @@ const LoginModal = () => {
             setIsLoading(false)
             if(callback?.ok){
                 toast.success('Logged in')
-                signIn('credentials')
                 router.refresh()
                 loginModal.onClose()
             }
