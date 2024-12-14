@@ -4,6 +4,7 @@ import { FaCirclePlus } from "react-icons/fa6";
 import { useState, useEffect } from 'react';
 import { usePathname } from "next/navigation";
 import { Button } from '@/components/ui/button';
+import {addToReservationList,deleteFromReservationList} from '@/app/actions/Notification';
 interface TrainWithStations {
   id: string;
   nameArabic: string;
@@ -111,34 +112,34 @@ export default function TrainCard({ trains, stations }: TrainCardProps) {
             key={train.id}
             className="relative h-60 p-4 rounded-xl shadow-md bg-gradient-to-br from-white to-gray-100 hover:shadow-lg hover:scale-105 transform transition duration-200 ease-in-out flex flex-col justify-center"
           >
-            
+  
+    
+                <div className="absolute right-5 top-5 z-10">
+                  useEffect(() => {
+                     <div className="absolute right-5 top-5 z-10">
+                   {train ?
+                    (<form action={addToReservationList}>
+                        <input type="hidden" name="waitingListId" value={waitingList.id} />
+                        <input type="hidden" name="trainId" value={train.id}/>
+                        <input type="hidden" name="pathName" value={pathname}/>
+                        <Button variant="outline" size="icon" className="rounded-3xl">
+                        <FaCirclePlus className="h-4 w-4 text-red-500"/>
+                        </Button>
+                    </form>
+                    ):(
+                    <form action={deleteFromReservationList}>
+                        <input type="hidden" name="trainId" value={train.id}/>
+                        <input type="hidden" name="pathName" value={pathname}/>
+                        <Button variant="outline" size="icon" className="rounded-3xl" >
+                            <CiCirclePlus className="h-4 w-4"/>
+                        </Button>
+                    </form>
+                  )}
+                </div>
 
-
-
-            <button onClick={() => setOpen(true)}>
-                
-            </button>
-
-            <div className="absolute right-5 top-5 z-10">
-                {train ?
-                (<form action={deleteFromWaitingList}>
-                    <input type="hidden" name="waitingListId" value={WaitingList.id} />
-                    <input type="hidden" name="movieId" value={train.id}/>
-                    <input type="hidden" name="pathName" value={pathname}/>
-                    <Button variant="outline" size="icon" className="rounded-3xl">
-                    <FaCirclePlus className="h-4 w-4 text-red-500"/>
-                    </Button>
-                </form>
-                ):(
-                <form action={addToWaitingList}>
-                    <input type="hidden" name="movieId" value={train.id}/>
-                    <input type="hidden" name="pathName" value={pathname}/>
-                    <Button variant="outline" size="icon" className="rounded-3xl" >
-                        <CiCirclePlus className="h-4 w-4"/>
-                    </Button>
-                </form>
-              )}
-            </div>
+                  }, [third])
+                  
+                    
 
 
 

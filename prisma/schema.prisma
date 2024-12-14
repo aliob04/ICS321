@@ -116,8 +116,6 @@ model Reservation {
   passengerId   String
   fromStationId String
   toStationId   String
-  status        String
-  coachType     String
   departureTime String
   arrivalTime   String
   date DateTime @default(now())
