@@ -22,39 +22,35 @@ interface TrainCardProps {
   stations: string[];
 }
 
+
 export default function TrainCard({ trains, stations }: TrainCardProps) {
   const [filteredTrains, setFilteredTrains] = useState(trains);
-
   const [fromStationFilter, setFromStationFilter] = useState("");
   const [toStationFilter, setToStationFilter] = useState("");
-
   const pathname = usePathname();
 
   useEffect(() => {
+    // Any client-side effects you want
     // Any client-side logic here
   }, []);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-
     let newFiltered = [...trains];
-
     if (fromStationFilter) {
       newFiltered = newFiltered.filter(train =>
         train.fromStation?.name === fromStationFilter
       );
     }
-
     if (toStationFilter) {
       newFiltered = newFiltered.filter(train =>
         train.toStation?.name === toStationFilter
       );
     }
-
     setFilteredTrains(newFiltered);
   };
-
   return (
+   
     <div className="mx-auto max-w-7xl py-12 px-6">
       <h1 className="text-3xl font-bold mb-8 text-center">Train Schedules</h1>
       
@@ -95,7 +91,7 @@ export default function TrainCard({ trains, stations }: TrainCardProps) {
             ))}
           </select>
         </div>
-
+      ))}
         <button
           type="submit"
           className="bg-blue-600 text-white rounded px-4 py-2 font-semibold hover:bg-blue-700 transition"
@@ -103,7 +99,6 @@ export default function TrainCard({ trains, stations }: TrainCardProps) {
           Search
         </button>
       </form>
-
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
         {filteredTrains.map((train) => (
           <div
