@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation';
 import { FaCirclePlus } from "react-icons/fa6";
 import { CiCirclePlus } from "react-icons/ci";
 import { Button } from '@/components/ui/button';
+import { addToReservationList, deleteFromReservationList } from '@/app/actions/Notification';
 
 interface TrainWithStations {
   id: string;
@@ -21,56 +22,69 @@ interface TrainWithStations {
 
 interface TrainCardProps {
   trains: TrainWithStations[];
-  reservations?: string[]; // IDs of reserved trains (optional)
+  reservations?: string[];
+  stations: string[]; // IDs of reserved trains (optional)
 }
 
 export default function TrainCard({ trains, reservations = [] }: TrainCardProps) {
   const pathname = usePathname();
   const [reservedTrains, setReservedTrains] = useState<string[]>(reservations);
+  const [filteredTrains, setFilteredTrains] = useState(trains);
+
+  const [fromStationFilter, setFromStationFilter] = useState("");
+  const [toStationFilter, setToStationFilter] = useState("");
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    let newFiltered = [...trains];
+
+    if (fromStationFilter) {
+      newFiltered = newFiltered.filter(train =>
+        train.fromStation?.name === fromStationFilter
+      );
+    }
+
+    if (toStationFilter) {
+      newFiltered = newFiltered.filter(train =>
+        train.toStation?.name === toStationFilter
+      );
+    }
+
+    setFilteredTrains(newFiltered);
+  };
 
   const handleAddToReservation = async (trainId: string) => {
     try {
-      const response = await fetch('/api/reservation', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ trainId, pathName: pathname }),
-      });
-
-      if (response.ok) {
-        const newReservation = await response.json();
+      const reservation = await addToReservationList({ trainId, pathName: pathname });
+      if (reservation) {
         setReservedTrains((prev) => [...prev, trainId]);
       } else {
-        console.error('Failed to add reservation');
+        console.error("Failed to add reservation");
       }
     } catch (error) {
-      console.error('Error adding reservation:', error);
+      console.error("Error adding reservation:", error);
     }
   };
 
   const handleDeleteReservation = async (reservationId: string) => {
     try {
-      const response = await fetch('/api/reservation', {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ reservationId, pathName: pathname }),
-      });
-
-      if (response.ok) {
+      const deletedReservation = await deleteFromReservationList({ reservationId, pathName: pathname });
+      if (deletedReservation) {
         setReservedTrains((prev) => prev.filter((id) => id !== reservationId));
       } else {
-        console.error('Failed to delete reservation');
+        console.error("Failed to delete reservation");
       }
     } catch (error) {
-      console.error('Error deleting reservation:', error);
+      console.error("Error deleting reservation:", error);
     }
   };
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 pt-36">
+    <>
+
+  
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 pt-96">
       {trains.map((train) => (
         <div
           key={train.id}
@@ -130,5 +144,6 @@ export default function TrainCard({ trains, reservations = [] }: TrainCardProps)
         </div>
       ))}
     </div>
+    </>
   );
 }

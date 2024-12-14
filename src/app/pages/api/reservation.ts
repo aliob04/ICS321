@@ -1,34 +1,45 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { addToReservationList, deleteFromReservationList } from '@/app/actions/Notification';
+import getCurrentUser from '@/app/actions/getCurrentUser';
+import prisma from '@/app/utils/db';
+import TrainCard from '@/app/components/utils/TrainCard';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  try {
-    if (req.method === 'POST') {
-      const { trainId, pathName } = req.body;
-
-      const formData = new FormData();
-      formData.append('trainId', trainId);
-      formData.append('pathName', pathName);
-
-      const reservation = await addToReservationList(formData);
-      return res.status(201).json(reservation);
-    }
-
-    if (req.method === 'DELETE') {
-      const { reservationId, pathName } = req.body;
-
-      const formData = new FormData();
-      formData.append('reservationId', reservationId);
-      formData.append('pathName', pathName);
-
-      const deletedReservation = await deleteFromReservationList(formData);
-      return res.status(200).json(deletedReservation);
-    }
-
-    res.setHeader('Allow', ['POST', 'DELETE']);
-    return res.status(405).json({ error: 'Method not allowed' });
-  } catch (error) {
-    console.error("Error in reservation API:", error);
-    return res.status(500).json({ error: 'Internal server error' });
+export default async function ReservationPage() {
+  const user = await getCurrentUser();
+  if (!user) {
+    throw new Error("User not authenticated.");
   }
+
+  // Fetch reservations for the current user
+  const reservations = await prisma.reservation.findMany({
+    where: { passenger: { userId: user.id } },
+    include: {
+      train: {
+        include: {
+          fromStation: true,
+          toStation: true,
+        },
+      },
+    },
+  });
+
+  console.log("Reservations fetched from Prisma:", reservations);
+
+  // Transform reservations into the required format for TrainCard
+  const trains = reservations.map((reservation) => ({
+    id: reservation.id,
+    nameArabic: reservation.train.nameArabic,
+    nameEnglish: reservation.train.nameEnglish,
+    departureTime: reservation.departureTime,
+    arrivalTime: reservation.arrivalTime,
+    fromStation: { name: reservation.train.fromStation.name },
+    toStation: { name: reservation.train.toStation.name },
+  }));
+
+  console.log("Trains formatted for TrainCard:", trains);
+
+  return (
+    <TrainCard
+      trains={trains}
+      reservations={reservations?.map((r) => r.id) || []}
+    />
+  );
 }

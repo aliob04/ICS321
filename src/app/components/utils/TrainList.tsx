@@ -19,12 +19,7 @@ export default async function TrainList() {
           name: true,
         },
       },
-      // Note: We no longer need reservation dates for filtering if we're removing the date criteria
-      // reservations: {
-      //   select: {
-      //     date: true
-      //   }
-      // }
+
     },
   });
 

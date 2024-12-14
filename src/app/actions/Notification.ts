@@ -1,13 +1,9 @@
 "use server";
-import { revalidatePath } from "next/cache";
 import prisma from "@/app/utils/db";
 import getCurrentUser from "./getCurrentUser";
 
-export async function addToReservationList(formData: FormData) {
-  const trainId = formData.get("trainId") as string;
-  const pathname = formData.get("pathName") as string;
-
-  if (!trainId || !pathname) {
+export async function addToReservationList({ trainId, pathName }: { trainId: string; pathName: string }) {
+  if (!trainId || !pathName) {
     throw new Error("Train ID or Pathname is missing.");
   }
 
@@ -16,7 +12,6 @@ export async function addToReservationList(formData: FormData) {
     throw new Error("User not authenticated.");
   }
 
-  // Fetch or create passenger
   let passenger = await prisma.passenger.findUnique({
     where: { userId: user.id },
   });
@@ -29,7 +24,6 @@ export async function addToReservationList(formData: FormData) {
     });
   }
 
-  // Fetch train details
   const train = await prisma.train.findUnique({
     where: { id: trainId },
     select: {
@@ -44,7 +38,6 @@ export async function addToReservationList(formData: FormData) {
     throw new Error("Train not found.");
   }
 
-  // Create reservation
   const reservation = await prisma.reservation.create({
     data: {
       trainId,
@@ -56,15 +49,10 @@ export async function addToReservationList(formData: FormData) {
     },
   });
 
-  revalidatePath(pathname);
-
   return reservation;
 }
 
-export async function deleteFromReservationList(formData: FormData) {
-  const reservationId = formData.get("reservationId") as string;
-  const pathName = formData.get("pathName") as string;
-
+export async function deleteFromReservationList({ reservationId, pathName }: { reservationId: string; pathName: string }) {
   if (!reservationId) {
     throw new Error("Reservation ID is missing.");
   }
@@ -72,8 +60,6 @@ export async function deleteFromReservationList(formData: FormData) {
   const deletedReservation = await prisma.reservation.delete({
     where: { id: reservationId },
   });
-
-  revalidatePath(pathName);
 
   return deletedReservation;
 }
