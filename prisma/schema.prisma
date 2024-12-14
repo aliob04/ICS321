@@ -118,9 +118,15 @@ model Reservation {
   toStationId   String
   status        String
   coachType     String
+<<<<<<< HEAD
   departureTime String
   arrivalTime   String
   date DateTime @default(now())
+=======
+  departureTime DateTime
+  arrivalTime   DateTime
+
+>>>>>>> 5d6fddf99ea7bb480a3255e9ea8900f2cb0f78a3
   train         Train       @relation(fields: [trainId], references: [id])
   passenger     Passenger   @relation(fields: [passengerId], references: [id])
   fromStation   Station     @relation("FromStation", fields: [fromStationId], references: [id])
