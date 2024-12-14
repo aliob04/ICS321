@@ -28,13 +28,10 @@ export default async function TrainList() {
     },
   });
 
-  const stations = await prisma.station.findMany({
-    select: {
-      name: true,
-    },
-  });
+  // If `reservations` data is needed, fetch and pass it accordingly.
+  // For now, we'll pass an empty array or fetch reservations if necessary.
 
-  const stationNames = stations.map((station) => station.name);
-  
-  return <TrainCard trains={trains} stations={stationNames} />;
+  const reservations = []; // Replace with actual reservation fetching logic if needed.
+
+  return <TrainCard trains={trains} reservations={reservations} />;
 }

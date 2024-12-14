@@ -1,3 +1,5 @@
+// src/app/components/search/SearchForm.tsx
+
 'use client';
 
 import { useState } from 'react';
@@ -19,7 +21,7 @@ export default function SearchForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Show toast with search details
     toast.success(
       `Search button is clicked!\nFrom: ${formData.departure}\nTo: ${formData.arrival}\nDate: ${formData.date}`,

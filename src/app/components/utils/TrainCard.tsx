@@ -1,9 +1,14 @@
 'use client';
+
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { FaCirclePlus } from "react-icons/fa6";
 import { CiCirclePlus } from "react-icons/ci";
 import { Button } from '@/components/ui/button';
+
+// Dynamically import the ClientOnly component with SSR disabled
+const ClientOnly = dynamic(() => import('@/app/components/ClientOnly'), { ssr: false });
 
 interface TrainWithStations {
   id: string;
@@ -83,7 +88,9 @@ export default function TrainCard({ trains, reservations = [] }: TrainCardProps)
               className="rounded-3xl absolute right-5 top-5 z-10"
               onClick={() => handleDeleteReservation(train.id)}
             >
-              <CiCirclePlus className="h-4 w-4 text-red-500" />
+              <ClientOnly>
+                <CiCirclePlus className="h-4 w-4 text-red-500" />
+              </ClientOnly>
             </Button>
           ) : (
             <Button
@@ -92,11 +99,13 @@ export default function TrainCard({ trains, reservations = [] }: TrainCardProps)
               className="rounded-3xl absolute right-5 top-5 z-10"
               onClick={() => handleAddToReservation(train.id)}
             >
-              <FaCirclePlus
-                className={`h-4 w-4 ${
-                  reservedTrains.includes(train.id) ? 'text-green-500' : 'text-red-500'
-                }`}
-              />
+              <ClientOnly>
+                <FaCirclePlus
+                  className={`h-4 w-4 ${
+                    reservedTrains.includes(train.id) ? 'text-green-500' : 'text-red-500'
+                  }`}
+                />
+              </ClientOnly>
             </Button>
           )}
 
