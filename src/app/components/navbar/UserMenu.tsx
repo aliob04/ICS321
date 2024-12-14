@@ -8,6 +8,15 @@ import useLoginModal from "@/app/hooks/useLoginModal"
 import { User } from "@prisma/client"
 import { signOut } from 'next-auth/react'
 import Inbox from "./Inbox"
+import Link from "next/link";
+
+interface linkProps {
+    name:string,
+    href: string
+}
+
+const link=
+    {name:"Reservations", href:'/reservation'}
 
 
 
@@ -51,7 +60,8 @@ const UserMenu:React.FC<UserMenuProps> = ({currentUser}) => {
                 hover:bg-neutral-100
                 cursor-pointer
             ">
-                <Inbox />
+                
+                <Link href={link.href} ><Inbox /></Link>
             </div>
             <div 
                 onClick ={toggleOpen} 
@@ -104,10 +114,7 @@ const UserMenu:React.FC<UserMenuProps> = ({currentUser}) => {
                 {currentUser ? (
                     <>
                         {console.log(currentUser)}
-                        <MenuItem onClick={()=>{}} label={currentUser.email as string}/>
-                        <hr />
-                        <MenuItem onClick={()=>{console.log(currentUser.id,currentUser.email)}} label="My reservations"/>
-                        <MenuItem onClick={()=>{}} label={"KFUPM Trainstations"}/> 
+                        <MenuItem onClick={()=>{}} label={currentUser.name as string}/>
                         <hr />
                         <MenuItem onClick={() => signOut()} label="Logout"/> 
                     </>

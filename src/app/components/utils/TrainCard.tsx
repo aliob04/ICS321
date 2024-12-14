@@ -1,8 +1,9 @@
 'use client';
-
+import { CiCirclePlus } from "react-icons/ci";
+import { FaCirclePlus } from "react-icons/fa6";
 import { useState, useEffect } from 'react';
 import { usePathname } from "next/navigation";
-
+import { Button } from '@/components/ui/button';
 interface TrainWithStations {
   id: string;
   nameArabic: string;
@@ -110,6 +111,38 @@ export default function TrainCard({ trains, stations }: TrainCardProps) {
             key={train.id}
             className="relative h-60 p-4 rounded-xl shadow-md bg-gradient-to-br from-white to-gray-100 hover:shadow-lg hover:scale-105 transform transition duration-200 ease-in-out flex flex-col justify-center"
           >
+            
+
+
+
+            <button onClick={() => setOpen(true)}>
+                
+            </button>
+
+            <div className="absolute right-5 top-5 z-10">
+                {train ?
+                (<form action={deleteFromWaitingList}>
+                    <input type="hidden" name="waitingListId" value={WaitingList.id} />
+                    <input type="hidden" name="movieId" value={train.id}/>
+                    <input type="hidden" name="pathName" value={pathname}/>
+                    <Button variant="outline" size="icon" className="rounded-3xl">
+                    <FaCirclePlus className="h-4 w-4 text-red-500"/>
+                    </Button>
+                </form>
+                ):(
+                <form action={addToWaitingList}>
+                    <input type="hidden" name="movieId" value={train.id}/>
+                    <input type="hidden" name="pathName" value={pathname}/>
+                    <Button variant="outline" size="icon" className="rounded-3xl" >
+                        <CiCirclePlus className="h-4 w-4"/>
+                    </Button>
+                </form>
+              )}
+            </div>
+
+
+
+            
             <h2 className="font-semibold text-xl mb-5 text-gray-900 text-center">
               {train.nameEnglish} - {train.nameArabic}
             </h2>
@@ -145,5 +178,6 @@ export default function TrainCard({ trains, stations }: TrainCardProps) {
         ))}
       </div>
     </div>
+    
   );
 }
