@@ -123,7 +123,6 @@ model Reservation {
   passenger     Passenger   @relation(fields: [passengerId], references: [id])
   fromStation   Station     @relation("FromStation", fields: [fromStationId], references: [id])
   toStation     Station     @relation("ToStation", fields: [toStationId], references: [id])
-
   payments      Payment[]
   waitingLists  WaitingList[]
 }

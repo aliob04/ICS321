@@ -1,21 +1,32 @@
-"use server"
-import { revalidatePath } from "next/cache"
-import prisma from "../utils/db";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/utils/auth"
+"use server";
+import { revalidatePath } from "next/cache";
+import prisma from "@/app/utils/db";
 import getCurrentUser from "./getCurrentUser";
 
-
-
 export async function addToReservationList(formData: FormData) {
-    "use server"
-  const pathname = formData.get("pathName") as string;
   const trainId = formData.get("trainId") as string;
+  const pathname = formData.get("pathName") as string;
 
-  // Get the current user
+  if (!trainId || !pathname) {
+    throw new Error("Train ID or Pathname is missing.");
+  }
+
   const user = await getCurrentUser();
   if (!user) {
     throw new Error("User not authenticated.");
+  }
+
+  // Fetch or create passenger
+  let passenger = await prisma.passenger.findUnique({
+    where: { userId: user.id },
+  });
+
+  if (!passenger) {
+    passenger = await prisma.passenger.create({
+      data: {
+        userId: user.id,
+      },
+    });
   }
 
   // Fetch train details
@@ -33,19 +44,10 @@ export async function addToReservationList(formData: FormData) {
     throw new Error("Train not found.");
   }
 
-  // Check if passenger exists
-  const passenger = await prisma.passenger.findUnique({
-    where: { userId: user.id },
-  });
-
-  if (!passenger) {
-    throw new Error("Passenger not found.");
-  }
-
   // Create reservation
   const reservation = await prisma.reservation.create({
     data: {
-      trainId:trainId,
+      trainId,
       passengerId: passenger.id,
       fromStationId: train.fromStationId,
       toStationId: train.toStationId,
@@ -54,28 +56,24 @@ export async function addToReservationList(formData: FormData) {
     },
   });
 
-  // Revalidate cache
   revalidatePath(pathname);
 
   return reservation;
 }
 
+export async function deleteFromReservationList(formData: FormData) {
+  const reservationId = formData.get("reservationId") as string;
+  const pathName = formData.get("pathName") as string;
 
-export async function deleteFromReservationList(FormData:FormData){
-    "use server"
+  if (!reservationId) {
+    throw new Error("Reservation ID is missing.");
+  }
 
+  const deletedReservation = await prisma.reservation.delete({
+    where: { id: reservationId },
+  });
 
-    const watchListId = FormData.get("watchListId") as string
-    const pathName =  FormData.get("pathName") as string
+  revalidatePath(pathName);
 
-    const data = await prisma.reservation.delete({
-        where:{
-            id:watchListId,
-        }
-    })
-    revalidatePath(pathName)
-}
-export async function sessions(){
-    "use server"
-    const session = await getServerSession(authOptions)
+  return deletedReservation;
 }
