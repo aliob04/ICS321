@@ -1,5 +1,5 @@
 import prisma from "@/app/utils/db";
-import TrainCard from "./TrainCard"; // This will be the client component
+import TrainCard from "./TrainCard";
 
 export default async function TrainList() {
   const trains = await prisma.train.findMany({
@@ -7,9 +7,34 @@ export default async function TrainList() {
       id: true,
       nameArabic: true,
       nameEnglish: true,
-      // Remove non-existing fields like fromStationId, etc. if they aren't in your schema
-    }
+      departureTime: true,
+      arrivalTime: true,
+      fromStation: {
+        select: {
+          name: true,
+        },
+      },
+      toStation: {
+        select: {
+          name: true,
+        },
+      },
+      // Note: We no longer need reservation dates for filtering if we're removing the date criteria
+      // reservations: {
+      //   select: {
+      //     date: true
+      //   }
+      // }
+    },
   });
 
-  return <TrainCard trains={trains} />;
+  const stations = await prisma.station.findMany({
+    select: {
+      name: true,
+    },
+  });
+
+  const stationNames = stations.map((station) => station.name);
+
+  return <TrainCard trains={trains} stations={stationNames} />;
 }
