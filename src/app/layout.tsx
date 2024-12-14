@@ -2,7 +2,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { redirect } from "next/navigation";
+
 const geistSans = localFont({
     src: "./fonts/GeistVF.woff",
     variable: "--font-geist-sans",
@@ -24,12 +24,11 @@ const geistSans = localFont({
   }: Readonly<{
     children: React.ReactNode;
   }>) {
-
+    
     return (
       <html lang="en">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
+        <body>
+
           {children}
         </body>
       </html>

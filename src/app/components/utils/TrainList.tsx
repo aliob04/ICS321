@@ -19,7 +19,6 @@ export default async function TrainList() {
           name: true,
         },
       },
-
     },
   });
 
@@ -30,6 +29,8 @@ export default async function TrainList() {
   });
 
   const stationNames = stations.map((station) => station.name);
-  
+
+  console.log("Stations:", stationNames); // Debugging: Ensure station names are logged
+
   return <TrainCard trains={trains} stations={stationNames} />;
 }
