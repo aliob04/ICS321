@@ -24,7 +24,7 @@ const Search = () => {
         font-semibold
         px-6
         ">
-            Anywhere
+            {/* Anywhere */}
         </div>
         {/* second item in the flex */}
         <div className="
@@ -37,7 +37,7 @@ const Search = () => {
         flex-1 
         text-center
         ">
-            AnyWeek
+            {/* AnyWeek */}
         </div>
         {/* third item in the flex*/}
         <div className="
@@ -54,7 +54,7 @@ const Search = () => {
             hidden 
             sm:block
             ">
-                Add Guest
+                {/* Add Guest */}
                 
             </div>
             <div className="

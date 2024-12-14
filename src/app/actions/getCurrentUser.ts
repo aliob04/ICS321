@@ -1,8 +1,8 @@
 import { getServerSession } from 'next-auth/next'
-
 import prisma from '../utils/db'
 import {authOptions} from '@/app/utils/auth'
 import toast from 'react-hot-toast';
+
 
 
 export async function getSession() {
@@ -34,5 +34,9 @@ export default async function getCurrentUser() {
         // we didn't throw an error because it is not an api call it is direct connect to the data base  
         return null
     }
+
+ 
+
+    
     
 }

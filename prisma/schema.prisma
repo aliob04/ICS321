@@ -82,6 +82,8 @@ model Train {
   nameEnglish  String     @unique
   fromStationId String
   toStationId   String
+  departureTime String
+  arrivalTime   String
   schedules    Schedule[]
   reservations Reservation[]
   fromStation   Station     @relation("FromStation", fields: [fromStationId], references: [id])
@@ -116,7 +118,9 @@ model Reservation {
   toStationId   String
   status        String
   coachType     String
-
+  departureTime String
+  arrivalTime   String
+  date DateTime @default(now())
   train         Train       @relation(fields: [trainId], references: [id])
   passenger     Passenger   @relation(fields: [passengerId], references: [id])
   fromStation   Station     @relation("FromStation", fields: [fromStationId], references: [id])
@@ -125,6 +129,7 @@ model Reservation {
   payments      Payment[]
   waitingLists  WaitingList[]
 }
+
 
 model Dependent {
   id          String     @id @default(cuid())

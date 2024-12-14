@@ -3,6 +3,7 @@ import Logo from './Logo'
 import Container from '@/app/components/utils/Container'
 import Search from './Search'
 import UserMenu from './UserMenu'
+import Inbox from './Inbox'
 
 interface NavbarProps{
   currentUser?: User | null

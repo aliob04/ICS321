@@ -1,11 +1,14 @@
 "use client"
 
+import { ReactNode } from "react"
+
 interface MenuItemProps {
     onClick: () => void
-    label:  string
+    label?:  string
+    icon?: ReactNode
 }
  
-const MenuItem:React.FC<MenuItemProps> = ({onClick, label}) => {
+const MenuItem:React.FC<MenuItemProps> = ({onClick, label, icon}) => {
   return (
     <div
     onClick={onClick} 
@@ -16,6 +19,7 @@ const MenuItem:React.FC<MenuItemProps> = ({onClick, label}) => {
     transition
     font-semibold
     ">
+      {icon}
       {label}
     </div>
   )
