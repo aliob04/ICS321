@@ -1,16 +1,15 @@
 "use client"
+import { usePathname } from 'next/navigation'
 import { BiSearch } from 'react-icons/bi'
 const Search = () => {
+  const pathName = usePathname()
   return (
     <div className='
-    border-[1px] 
+    mt-4
     w-full 
     md:w-auto py-2 
-    rounded-full 
-    shadow-sm 
-    hover:shadow-md 
     transition 
-    cursor-pointer
+
     '>
        {/*open flex */}
       <div className="
@@ -20,55 +19,23 @@ const Search = () => {
       justify-between">
         {/* first item in the flex */}
         <div className="
-        text-sm 
-        font-semibold
+        text-xl 
+        font-bold
         px-6
         ">
-            {/* Anywhere */}
+
+
         </div>
-        {/* second item in the flex */}
-        <div className="
-        hidden
-        sm:block
-        text-sm
-        font-semibold
-        px-6
-        border-l-[1px]
-        flex-1 
-        text-center
-        ">
-            {/* AnyWeek */}
-        </div>
-        {/* third item in the flex*/}
-        <div className="
-        text-sm
-        pl-6
-        pr-2
-        text-gray-600
-        flex
-        flex-row
-        items-center
-        gap-3
-        ">
-            <div className="
-            hidden 
-            sm:block
-            ">
-                {/* Add Guest */}
-                
-            </div>
-            <div className="
-                p-2
-                rounded-full
-                bg-green-400
-                text-white
-                ">
-                    <BiSearch size={18}/>
-                </div>
+        { pathName !== '/dashboard' ? '':<h2 className="scroll-m-20  pb-2 text-3xl font-semibold tracking-tight first:mt-0">
+      Admin Dashboard
+    </h2>}
+        { pathName !== '/reservation' ? '':<h2 className="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0">
+      Reservation
+    </h2>}
         </div>
         {/* close flex*/}
       </div>
-    </div>
+ 
   )
 }
 

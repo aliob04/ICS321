@@ -41,6 +41,8 @@ export async function addToReservationList({ trainId, pathName }: { trainId: str
   const reservation = await prisma.reservation.create({
     data: {
       trainId,
+      userName: user.name, // Ensure `user.name` exists
+      userEmail: user.email, // Ensure `user.email` exists
       passengerId: passenger.id,
       fromStationId: train.fromStationId,
       toStationId: train.toStationId,
@@ -48,6 +50,7 @@ export async function addToReservationList({ trainId, pathName }: { trainId: str
       arrivalTime: train.arrivalTime,
     },
   });
+  
 
   return reservation;
 }

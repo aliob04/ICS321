@@ -61,7 +61,7 @@ const UserMenu:React.FC<UserMenuProps> = ({currentUser}) => {
                 cursor-pointer
             ">
                 
-                <Link href={link.href} ><Inbox /></Link>
+                <Link href={link.href}  ><Inbox /></Link>
             </div>
             <div 
                 onClick ={toggleOpen} 
@@ -113,8 +113,9 @@ const UserMenu:React.FC<UserMenuProps> = ({currentUser}) => {
 
                 {currentUser ? (
                     <>
-                        {console.log(currentUser)}
+                        
                         <MenuItem onClick={()=>{}} label={currentUser.name as string}/>
+                        { currentUser.accessLevel ? (<Link href='/dashboard'><MenuItem onClick={()=>{}} label="Admin Dashboard"/></Link>):''}
                         <hr />
                         <MenuItem onClick={() => signOut()} label="Logout"/> 
                     </>

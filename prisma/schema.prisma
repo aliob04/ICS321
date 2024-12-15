@@ -48,6 +48,10 @@ model User {
   sessions      Session[]
   passenger     Passenger?
   staff         Staff?
+  reservation   Reservation[]
+
+    @@unique([name, email]) // Composite unique constraint
+
 }
 
 model VerificationRequest {
@@ -84,6 +88,7 @@ model Train {
   toStationId   String
   departureTime String
   arrivalTime   String
+  date DateTime @default(now())
   schedules    Schedule[]
   reservations Reservation[]
   fromStation   Station     @relation("FromStation", fields: [fromStationId], references: [id])
@@ -112,6 +117,8 @@ model Schedule {
 
 model Reservation {
   id            String      @id @default(cuid())
+  userName      String
+  userEmail     String
   trainId       String
   passengerId   String
   fromStationId String
@@ -123,6 +130,8 @@ model Reservation {
   passenger     Passenger   @relation(fields: [passengerId], references: [id])
   fromStation   Station     @relation("FromStation", fields: [fromStationId], references: [id])
   toStation     Station     @relation("ToStation", fields: [toStationId], references: [id])
+  user          User        @relation(fields: [userName, userEmail], references: [name, email], onDelete: Cascade)
+
   payments      Payment[]
   waitingLists  WaitingList[]
 }

@@ -7,6 +7,7 @@ import Navbar from "@/app/components/navbar/Navbar";
 import ClientOnly from "../components/ClientOnly";
 import { User } from "@prisma/client";
 import { NextAuthProvider } from "@/app/components/utils/NextAuthProvider";
+
 import TrainList from "@/app/components/utils/TrainList";
 
 

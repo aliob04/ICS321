@@ -1,6 +1,7 @@
 
 import "./globals.css";
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 import localFont from "next/font/local";
 
 const geistSans = localFont({
@@ -24,7 +25,7 @@ const geistSans = localFont({
   }: Readonly<{
     children: React.ReactNode;
   }>) {
-    
+  
     return (
       <html lang="en">
         <body>
