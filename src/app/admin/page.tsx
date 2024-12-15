@@ -84,9 +84,17 @@ export default function AdminDashboard() {
             <p>{staff.length} Total Staff Members</p>
           </Link>
 
-          <Link href="/admin/reports" className="bg-white p-4 shadow-md rounded-md hover:bg-blue-100">
-            <h2 className="text-xl font-bold">Reports</h2>
-            <p>View Key Reports</p>
+          <Link href="/admin/reports/stations" className="bg-white p-4 shadow-md rounded-md hover:bg-blue-100">
+            <h2 className="text-xl font-bold">Stations Report</h2>
+            <p>View Station Details and Related Trains</p>
+          </Link>
+
+          <Link 
+            href="/admin/reports/waitlist" 
+            className="bg-white p-4 shadow-md rounded-md hover:bg-blue-100"
+          >
+            <h2 className="text-xl font-bold">Waitlist Report</h2>
+            <p>View Waitlisted Passengers</p>
           </Link>
         </section>
         
