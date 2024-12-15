@@ -5,28 +5,26 @@ import { FaCirclePlus } from "react-icons/fa6";
 import { CiCirclePlus } from "react-icons/ci";
 import { Button } from '@/components/ui/button';
 
-interface TrainWithStations {
-  id: string;
-  nameArabic: string;
-  nameEnglish: string;
-  departureTime: string;
-  arrivalTime: string;
-  fromStation: {
-    name: string;
-  };
-  toStation: {
-    name: string;
-  };
+export interface TrainCardProps {
+  trains: {
+    id: string;
+    nameArabic: string;
+    nameEnglish: string;
+    departureTime: Date;
+    arrivalTime: Date;
+    fromStation: {
+      name: string;
+    };
+    toStation: {
+      name: string;
+    };
+  }[];
+  stations: string[];
 }
 
-interface TrainCardProps {
-  trains: TrainWithStations[];
-  reservations?: string[]; // IDs of reserved trains (optional)
-}
-
-export default function TrainCard({ trains, reservations = [] }: TrainCardProps) {
+export default function TrainCard({ trains, stations }: TrainCardProps) {
   const pathname = usePathname();
-  const [reservedTrains, setReservedTrains] = useState<string[]>(reservations);
+  const [reservedTrains, setReservedTrains] = useState<string[]>([]);
 
   const handleAddToReservation = async (trainId: string) => {
     try {
@@ -119,13 +117,13 @@ export default function TrainCard({ trains, reservations = [] }: TrainCardProps)
             <span className="font-medium bg-gray-800 text-white rounded px-2 py-0.5 inline-block mr-2">
               Departs
             </span>
-            <span>{train.departureTime}</span>
+            <span>{train.departureTime.toLocaleTimeString()}</span>
           </p>
           <p className="text-base text-gray-700 flex items-center">
             <span className="font-medium bg-gray-800 text-white rounded px-2 py-0.5 inline-block mr-2">
               Arrives
             </span>
-            <span>{train.arrivalTime}</span>
+            <span>{train.arrivalTime.toLocaleTimeString()}</span>
           </p>
         </div>
       ))}

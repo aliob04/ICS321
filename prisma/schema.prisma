@@ -70,10 +70,11 @@ model Passenger {
 }
 
 model Staff {
-  id     String   @id @default(cuid())
-  userId String   @unique
-  user   User     @relation(fields: [userId], references: [id])
-  role   String   // 'Reservation Manager' or 'Train Operator'
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  role      String
+  createdAt DateTime @default(now())
 }
 
 model Train {
@@ -111,22 +112,13 @@ model Schedule {
 }
 
 model Reservation {
-  id            String      @id @default(cuid())
-  trainId       String
-  passengerId   String
-  fromStationId String
-  toStationId   String
-  departureTime String
-  arrivalTime   String
-  date DateTime @default(now())
-  train         Train       @relation(fields: [trainId], references: [id])
-  passenger     Passenger   @relation(fields: [passengerId], references: [id])
-  fromStation   Station     @relation("FromStation", fields: [fromStationId], references: [id])
-  toStation     Station     @relation("ToStation", fields: [toStationId], references: [id])
-  payments      Payment[]
-  waitingLists  WaitingList[]
+  id        String   @id @default(cuid())
+  train     Train    @relation(fields: [trainId], references: [id])
+  trainId   String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  createdAt DateTime @default(now())
 }
-
 
 model Dependent {
   id          String     @id @default(cuid())

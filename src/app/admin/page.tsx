@@ -3,10 +3,24 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
+interface Train {
+  id: string;
+  nameEnglish: string;
+  nameArabic: string;
+  departureTime: string;
+  arrivalTime: string;
+  fromStation: {
+    name: string;
+  };
+  toStation: {
+    name: string;
+  };
+}
+
 export default function AdminDashboard() {
-  const [trains, setTrains] = useState([]);
-  const [reservations, setReservations] = useState([]);
-  const [staff, setStaff] = useState([]);
+  const [trains, setTrains] = useState<Train[]>([]);
+  const [reservations, setReservations] = useState<any[]>([]);
+  const [staff, setStaff] = useState<any[]>([]);
 
   useEffect(() => {
     fetchData();
@@ -14,19 +28,41 @@ export default function AdminDashboard() {
 
   const fetchData = async () => {
     try {
-      const trainResponse = await fetch('/api/trains');
-      const reservationResponse = await fetch('/api/reservations');
-      const staffResponse = await fetch('/api/staff');
+      const trainResponse = await fetch('/api/trains', {
+        method: 'GET',
+        cache: 'no-store'
+      });
       
+      if (!trainResponse.ok) {
+        console.error('Trains API Error:', await trainResponse.text());
+        return;
+      }
+
       const trainsData = await trainResponse.json();
-      const reservationsData = await reservationResponse.json();
-      const staffData = await staffResponse.json();
-      
       setTrains(trainsData);
-      setReservations(reservationsData);
-      setStaff(staffData);
+
+      // Fetch reservations and staff data separately to avoid blocking if one fails
+      try {
+        const reservationResponse = await fetch('/api/reservations');
+        if (reservationResponse.ok) {
+          const reservationsData = await reservationResponse.json();
+          setReservations(reservationsData);
+        }
+      } catch (error) {
+        console.error('Error fetching reservations:', error);
+      }
+
+      try {
+        const staffResponse = await fetch('/api/staff');
+        if (staffResponse.ok) {
+          const staffData = await staffResponse.json();
+          setStaff(staffData);
+        }
+      } catch (error) {
+        console.error('Error fetching staff:', error);
+      }
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error('Error fetching trains:', error);
     }
   };
 
